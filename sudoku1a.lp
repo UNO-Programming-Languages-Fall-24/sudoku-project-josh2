@@ -6,12 +6,6 @@
 
 % Your implementation please...
 
-% Facts representing the initial state of the puzzle
-initial(1,2,2).
-initial(2,4,4).
-initial(3,1,2).
-initial(4,3,1).
-
 % Generate possible values for each cell
 { sudoku(X, Y, Z) : Z = 1..4 } = 1 :- X = 1..4, Y = 1..4.
 
@@ -29,8 +23,5 @@ subgrid(X, Y, 1) :- X = 1..2, Y = 1..2.
 subgrid(X, Y, 2) :- X = 1..2, Y = 3..4.
 subgrid(X, Y, 3) :- X = 3..4, Y = 1..2.
 subgrid(X, Y, 4) :- X = 3..4, Y = 3..4.
-
-
-
 
 #show sudoku/3.
