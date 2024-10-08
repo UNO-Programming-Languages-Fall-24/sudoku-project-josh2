@@ -25,4 +25,4 @@ subgrid(X, Y, 4) :- X = 3..4, Y = 3..4.
 
 
 % Show the solution
-#show sudoku(X,Y,Z) : sudoku(X,Y,Z).
+#show sudoku/3.
