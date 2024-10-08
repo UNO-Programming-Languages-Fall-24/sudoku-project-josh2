@@ -6,25 +6,30 @@
 
 % Your implementation please...
 
-% Generate possible values for each cell
-{ sudoku(X, Y, Z) : Z = 1..9 } = 1 :- X = 1..9, Y = 1..9.
+% Define size and range
+size(9).
+value(1..9).
 
-% Respect the initial values
-sudoku(X, Y, Z) :- initial(X, Y, Z).
+% Generate possible values for each cell (1 to 4) in a 4x4 grid
+1 { sudoku(X, Y, Z) : value(Z) } = 1 :- size(Size), X = 1..Size, Y = 1..Size.
 
-% Each number appears exactly once in each row
-:- sudoku(X, Y1, Z), sudoku(X, Y2, Z), Y1 != Y2, X = 1..9, Z = 1..9.
+% Row constraints: Each number must appear exactly once in each row
+:- sudoku(X, Y1, Z), sudoku(X, Y2, Z), Y1 != Y2.
 
-% Each number appears exactly once in each column
-:- sudoku(X1, Y, Z), sudoku(X2, Y, Z), X1 != X2, Y = 1..9, Z = 1..9.
+% Column constraints: Each number must appear exactly once in each column
+:- sudoku(X1, Y, Z), sudoku(X2, Y, Z), X1 != X2.
 
-% Each number appears exactly once in each subgrid
+% Subgrid constraints: Each number must appear exactly once in each 2x2 subgrid
 :- sudoku(X1, Y1, Z), sudoku(X2, Y2, Z),
-   X1 != X2, Y1 != Y2,
-   (div(X1-1, 3) * 3 + div(Y1-1, 3)) = (div(X2-1, 3) * 3 + div(Y2-1, 3)),
-   Z = 1..9.
+   (X1-1)/3 == (X2-1)/3,
+   (Y1-1)/3 == (Y2-1)/3,
+   (X1, Y1) != (X2, Y2).
 
-% Ensure uniqueness of the solution
-:- 2 { sudoku(X, Y, Z) : Z = 1..9 }, X = 1..9, Y = 1..9.
+% Respect the initial values provided
+initial(X, Y, Z) :- sudoku(X, Y, Z).
 
+% Ensure the initial values are respected
+:- initial(X, Y, Z), not sudoku(X, Y, Z).
+
+% Show the solution
 #show sudoku/3.
